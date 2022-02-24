@@ -145,8 +145,11 @@ def payment(request, pk):
         balance = t.balance
         interest = t.interest
         dept = t.dept
+        date = t.date
         balance_1 = t.balance - amount
         if request.POST['paid'] == 'saved':
+            if amount > amount % 3:
+                date = datetime.date.today()
             amount = t.balance - amount
             if amount <= 0:
                 amount = 0
@@ -154,7 +157,7 @@ def payment(request, pk):
                 interest = 0
             elif balance_1 <= 0:
                 dept = 0
-            ls.information_set.update(balance=amount, interest=interest, dept=dept)
+            ls.information_set.update(balance=amount, interest=interest, dept=dept, date=date)
             ls.save()
 
             if balance_1 <= 0:
